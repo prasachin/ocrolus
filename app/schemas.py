@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
 from typing import Optional, List
-
+from pydantic import ConfigDict
 
 class UserBase(BaseModel):
     username: str
@@ -18,8 +18,7 @@ class UserResponse(UserBase):
     created_at: datetime
     updated_at: Optional[datetime] = None
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ArticleBase(BaseModel):
@@ -43,8 +42,7 @@ class ArticleResponse(ArticleBase):
     updated_at: Optional[datetime] = None
     author: UserResponse
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ArticleListResponse(BaseModel):
@@ -55,8 +53,7 @@ class ArticleListResponse(BaseModel):
     updated_at: Optional[datetime] = None
     author: UserResponse
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ArticlesPaginatedResponse(BaseModel):
@@ -74,8 +71,7 @@ class RecentlyViewedArticleResponse(BaseModel):
     viewed_at: datetime
     author: UserResponse
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class Token(BaseModel):
