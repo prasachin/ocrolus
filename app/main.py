@@ -3,10 +3,14 @@ from app.database import engine, get_db, check_db_connection
 from app.models import Base
 import logging
 from sqlalchemy import text
+from app.routers import auth, articles
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 app = FastAPI()
+
+app.include_router(auth.router)
+app.include_router(articles.router)
 
 @app.on_event("startup")
 async def startup_event():
