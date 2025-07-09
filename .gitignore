@@ -51,3 +51,4 @@ venv/
 htmlcov/
 .pytest_cache/
 alembic.ini
+versions
