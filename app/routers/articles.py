@@ -154,3 +154,32 @@ def update_article(
     
     return article
 
+
+# here i created a endpoint to delete the article using its id. Also i am adding functionality that only the author of the article can delete it.
+
+@router.delete("/{article_id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_article(
+    article_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Delete an article (only by the author)
+    """
+    article = db.query(Article).filter(Article.id == article_id).first()
+    
+    if not article:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Article not found"
+        )
+    
+    # Check if current user is the author
+    if article.author_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You can only delete your own articles"
+        )
+    
+    db.delete(article)
+    db.commit()
