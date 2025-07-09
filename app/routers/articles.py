@@ -10,10 +10,13 @@ from app.schemas import (
     ArticleResponse,
     ArticleListResponse,
     ArticlesPaginatedResponse,
+    RecentlyViewedArticleResponse,
 )
 from app.schemas import (
     ArticleCreate,
 )
+
+from app.recently_viewed_service import recently_viewed_service
 
 router = APIRouter(prefix="/articles", tags=["articles"])
 
@@ -85,7 +88,7 @@ def get_article(
     current_user: User = Depends(get_current_user)
 ):
     """
-    Get a specific article by ID.
+    Get a specific article by ID and track it as recently viewed
     """
     article = db.query(Article).filter(Article.id == article_id).first()
     
@@ -95,4 +98,18 @@ def get_article(
             detail="Article not found"
         )
     
+    # Here i am tracking the article as recently viewed by the user.
+    recently_viewed_service.add_view(current_user.id, article)
+    
     return article
+
+
+# Here i created a endpoint to get the recently viewed articles for the current user.
+@router.get("/recently-viewed/me", response_model=List[RecentlyViewedArticleResponse])
+def get_recently_viewed_articles(
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Get recently viewed articles for the current user
+    """
+    return recently_viewed_service.get_recently_viewed(current_user.id)
