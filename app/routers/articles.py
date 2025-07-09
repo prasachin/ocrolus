@@ -11,6 +11,7 @@ from app.schemas import (
     ArticleListResponse,
     ArticlesPaginatedResponse,
     RecentlyViewedArticleResponse,
+    ArticleUpdate,
 )
 from app.schemas import (
     ArticleCreate,
@@ -113,3 +114,43 @@ def get_recently_viewed_articles(
     Get recently viewed articles for the current user
     """
     return recently_viewed_service.get_recently_viewed(current_user.id)
+
+
+
+# Here i created a endpoint to update the article using its id.Also i am adding functionality that only the author of the article can update it.
+@router.put("/{article_id}", response_model=ArticleResponse)
+def update_article(
+    article_id: int,
+    article_update: ArticleUpdate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Update an article (only by the author)
+    """
+    article = db.query(Article).filter(Article.id == article_id).first()
+    
+    if not article:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Article not found"
+        )
+    
+    # Check if current user is the author
+    if article.author_id != current_user.id:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="You can only update your own articles"
+        )
+    
+    # Update fields if provided, we can customize it as per the entities of the article.now we have only title and content.
+    if article_update.title is not None:
+        article.title = article_update.title
+    if article_update.content is not None:
+        article.content = article_update.content
+    
+    db.commit()
+    db.refresh(article)
+    
+    return article
+
