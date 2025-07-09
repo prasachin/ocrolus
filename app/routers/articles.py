@@ -76,3 +76,23 @@ def get_articles(
         page_size=page_size,
         total_pages=total_pages
     )
+
+# Here i created a endpoint to view a specific article by its ID. 
+@router.get("/{article_id}", response_model=ArticleResponse)
+def get_article(
+    article_id: int,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Get a specific article by ID.
+    """
+    article = db.query(Article).filter(Article.id == article_id).first()
+    
+    if not article:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Article not found"
+        )
+    
+    return article
