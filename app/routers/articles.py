@@ -9,6 +9,7 @@ from app.auth import get_current_user
 from app.schemas import (
     ArticleResponse,
     ArticleListResponse,
+    ArticlesPaginatedResponse,
 )
 from app.schemas import (
     ArticleCreate,
@@ -16,6 +17,8 @@ from app.schemas import (
 
 router = APIRouter(prefix="/articles", tags=["articles"])
 
+
+# Here I created a route so that users can create articles. Also all the routes are protected by authentication.user must be logged in to create an article.
 @router.post("/", response_model=ArticleResponse, status_code=status.HTTP_201_CREATED)
 def create_article(
     article_data: ArticleCreate,
@@ -36,3 +39,40 @@ def create_article(
     db.refresh(new_article)
     
     return new_article
+
+# Here I created a route so that users can req articles and also pagination is implemented.
+@router.get("/", response_model=ArticlesPaginatedResponse)
+def get_articles(
+    page: int = Query(1, ge=1, description="Page number"),
+    page_size: int = Query(10, ge=1, le=100, description="Items per page"),
+    db: Session = Depends(get_db),
+    current_user: User = Depends(get_current_user)
+):
+    """
+    Get paginated list of articles
+    """
+    offset = (page - 1) * page_size
+    
+    # Get total count
+    total_articles = db.query(Article).count()
+    
+    # Get articles with pagination, it means we are fetching the articles
+    # ordered by creation date, with an offset and limit for pagination. if user wants to see the most recent articles first.
+    # here i used ordering by created_at in descending order to show the most recent articles first, intentionally.
+    articles = (
+        db.query(Article)
+        .order_by(desc(Article.created_at))
+        .offset(offset)
+        .limit(page_size)
+        .all()
+    )
+    
+    total_pages = math.ceil(total_articles / page_size)
+    
+    return ArticlesPaginatedResponse(
+        articles=articles,
+        total=total_articles,
+        page=page,
+        page_size=page_size,
+        total_pages=total_pages
+    )
