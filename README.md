@@ -494,7 +494,7 @@ Unit tests are provided to ensure the functionality of the API endpoints. The te
 The `schemas` Changelog Management system is implemented using ambelic. It allows for versioning and tracking changes to the API schemas over time. Each schema change is documented with a version number, description, and date of change.  
 This ensures that the API remains backward compatible and allows for easy migration of clients to newer versions.
 
-## Running the Application
+## Running the Application Locally
 
 To run the application, follow these steps:
 
@@ -546,6 +546,26 @@ To run the application, follow these steps:
 8. **Access the API**:
    Open your browser and go to `http://localhost:8000/docs` to view the
    interactive API documentation (Swagger UI).
+
+## Running the Application with Docker
+
+To run the application using Docker, follow these steps:
+
+1. **Clone the Repository**:
+
+   ```bash
+   git clone
+   ```
+
+2. **Navigate to the Project Directory**:
+   ```bash
+   cd ocrolus
+   ```
+3. **Build and Run the docker images**:
+   ```bash
+    docker-compose up --build
+   ```
+   **_Note: There is separate Container for the database and the application. The database is MySQL and the application is FastAPI._**
 
 ## Testing the Application
 
