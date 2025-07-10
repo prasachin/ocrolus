@@ -1,7 +1,7 @@
 # ocrolus Backend Assignment
 
 ### This is the Backend basic architecture diagram.
-
+#### ***Note: This is a simplified version of the architecture diagram.There is no any admin panel or frontend in this project.***
 ![structurizr-104370-Container-001(1)](https://github.com/user-attachments/assets/7ed471f8-abea-4b16-b166-2febf2db4883)
 
 ## Tech Stack
@@ -472,3 +472,82 @@ The API uses standard HTTP status codes:
 - **Input Validation**: Pydantic schemas for request validation
 
 ---
+
+## Unit Tests
+
+Unit tests are provided to ensure the functionality of the API endpoints. The tests cover:
+
+- User registration and login
+- Article creation, retrieval, updating, and deletion
+- Recently viewed articles tracking
+- Pagination and ordering of articles
+- Error handling scenarios
+- Authentication and authorization checks
+- Health check endpoint
+- Root endpoint response
+- all the 17 checks are there.
+
+## schemas Changelog Management
+
+The `schemas` Changelog Management system is implemented using ambelic. It allows for versioning and tracking changes to the API schemas over time. Each schema change is documented with a version number, description, and date of change.  
+This ensures that the API remains backward compatible and allows for easy migration of clients to newer versions.
+
+## Running the Application
+
+To run the application, follow these steps:
+
+1. **Clone the Repository**:
+
+   ```bash
+   git clone
+
+   ```
+
+2. **Navigate to the Project Directory**:
+   ```bash
+   cd ocrolus
+   ```
+3. **Create a Virtual Environment**:
+   ```bash
+   python -m venv venv
+   ```
+4. **Activate the Virtual Environment**:
+   - On Windows:
+     ```bash
+     venv\Scripts\activate
+     ```
+   - On macOS/Linux:
+     ```bash
+     source venv/bin/activate
+     ```
+5. **Install Dependencies**:
+   ```bash
+   pip install -r requirements.txt
+   ```
+6. **Run the Application**:
+   ```bash
+   uvicorn app.main:app --reload
+   ```
+7. **Access the API**:
+   Open your browser and go to `http://localhost:8000/docs` to view the
+   interactive API documentation (Swagger UI).
+
+## Testing the Application
+
+To run the tests, ensure you have `pytest` installed. You can run the all the tests using the following command:
+
+```bash
+pytest
+```
+
+## Running schemas Changelog Management
+
+To run the schemas Changelog Management, you can use the following useful commands:
+
+- `alembic init` Creates folders like versions/, and a config file alembic.ini.
+- `alembic revision -m "<message>"` Generates a new empty migration script with the given message.
+- `alembic revision --autogenerate -m "<message>"` Generates a new migration script with the changes detected in the models.
+- `alembic upgrade <target>` Applies the migration to the target version.
+- `alembic downgrade <target>` Reverts the migration to the target version.
+- `alembic history` Shows the history of migrations applied to the database.
+- `alembic current` Shows the current version of the database schema.
