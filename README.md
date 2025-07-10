@@ -1,7 +1,9 @@
 # ocrolus Backend Assignment
 
 ### This is the Backend basic architecture diagram.
-#### ***Note: This is a simplified version of the architecture diagram.There is no any admin panel or frontend in this project.***
+
+#### **_Note: This is a simplified version of the architecture diagram.There is no any admin panel or frontend in this project._**
+
 ![structurizr-104370-Container-001(1)](https://github.com/user-attachments/assets/7ed471f8-abea-4b16-b166-2febf2db4883)
 
 ## Tech Stack
