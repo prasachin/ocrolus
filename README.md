@@ -526,11 +526,24 @@ To run the application, follow these steps:
    ```bash
    pip install -r requirements.txt
    ```
-6. **Run the Application**:
+6. **Set Up the Environment Variables**:
+   Create a `.env` file in the root directory and add the following variables:
+
+   ```bash
+   # .env
+   DATABASE_URL=mysql+mysqlconnector://root:Ra62052Sa%40@localhost/CMS_db
+   SECRET_KEY=ocrolus_secret_key
+   ALGORITHM=HS256
+   ACCESS_TOKEN_EXPIRE_MINUTES=30
+   ```
+
+   **_Note: Make sure to replace the `DATABASE_URL` with your actual database connection string._**
+
+7. **Run the Application**:
    ```bash
    uvicorn app.main:app --reload
    ```
-7. **Access the API**:
+8. **Access the API**:
    Open your browser and go to `http://localhost:8000/docs` to view the
    interactive API documentation (Swagger UI).
 
