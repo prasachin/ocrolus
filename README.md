@@ -565,7 +565,7 @@ To run the application using Docker, follow these steps:
    ```bash
     docker-compose up --build
    ```
-   **_Note: There is separate Container for the database and the application. The database is MySQL and the application is FastAPI._**
+   **_Note: There is separate Container for the database and the application. The database is MySQL and the application used FastAPI._**
 
 ## Testing the Application
 
